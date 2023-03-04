@@ -10,7 +10,7 @@ public class PetRequest {
     private String specie;
     private String gender;
     private String size;
-    private Integer age;
+    private String age;
     private String coatLength;
     private String behavior;
 }

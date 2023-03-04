@@ -12,7 +12,7 @@ public class PetService {
 
     private final PetReporitory petReporitory;
 
-    public void savePet(PetRequest petRequest){
+    public Pet savePet(PetRequest petRequest){
         Pet pet = Pet.builder()
                 .name(petRequest.getName())
                 .specie(petRequest.getSpecie())
@@ -22,6 +22,6 @@ public class PetService {
                 .coatLength(petRequest.getCoatLength())
                 .behavior(petRequest.getBehavior())
                 .build();
-        petReporitory.save(pet);
+        return petReporitory.save(pet);
     }
 }

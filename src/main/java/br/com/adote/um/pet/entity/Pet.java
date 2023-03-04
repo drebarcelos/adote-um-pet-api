@@ -31,7 +31,7 @@ public class Pet {
     private String size;
 
     @Column(nullable = false)
-    private Integer age;
+    private String age;
 
     @Column(nullable = false)
     private String coatLength;

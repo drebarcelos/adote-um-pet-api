@@ -16,11 +16,7 @@ public class PetController {
     private final PetService petService;
 
     @PostMapping(path = "/cadastro/pet")
-    public ResponseEntity<Void> petRegister(@RequestBody PetRequest petRequest){
-        petService.savePet(petRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Object> petRegister(@RequestBody PetRequest petRequest){
+        return ResponseEntity.status(HttpStatus.CREATED).body(petService.savePet(petRequest));
     }
-
-
-
 }
