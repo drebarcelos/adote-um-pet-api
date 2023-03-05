@@ -2,6 +2,7 @@ package br.com.adote.um.pet.controller;
 
 import br.com.adote.um.pet.dto.PetRequest;
 import br.com.adote.um.pet.entity.Pet;
+import br.com.adote.um.pet.exception.PetNotFoundException;
 import br.com.adote.um.pet.service.PetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,11 +29,11 @@ public class PetController {
     }
 
     @GetMapping("/pets/{id}")
-    public ResponseEntity<Object> getRegister(@PathVariable Long id){
+    public ResponseEntity<Pet> getRegister(@PathVariable Long id){
         Optional<Pet> petOptional = petService.getPet(id);
-        if(petOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet not found!");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(petOptional.get());
+
+        return petOptional
+                .map(pet -> ResponseEntity.status(HttpStatus.OK).body(pet))
+                .orElseThrow(() -> new PetNotFoundException(id));
     }
 }
