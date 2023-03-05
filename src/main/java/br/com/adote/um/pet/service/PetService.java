@@ -6,6 +6,8 @@ import br.com.adote.um.pet.entity.Pet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PetService {
@@ -23,5 +25,9 @@ public class PetService {
                 .behavior(petRequest.getBehavior())
                 .build();
         return petReporitory.save(pet);
+    }
+
+    public List<Pet> getAllPets(){
+        return petReporitory.findAll();
     }
 }
