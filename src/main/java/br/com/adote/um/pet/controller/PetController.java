@@ -36,4 +36,9 @@ public class PetController {
                 .map(pet -> ResponseEntity.status(HttpStatus.OK).body(pet))
                 .orElseThrow(() -> new PetNotFoundException(id));
     }
+
+    @DeleteMapping("/pets/{id}")
+    public ResponseEntity<Object> deleteRegister(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(petService.checkPetRegistration(id));
+    }
 }
