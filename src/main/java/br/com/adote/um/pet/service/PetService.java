@@ -34,7 +34,11 @@ public class PetService {
     }
 
     public Optional<Pet> getPet(Long id){
-        return petReporitory.findById(id);
+        Optional<Pet> petOptional = petReporitory.findById(id);
+
+        return petOptional
+                .map(pet -> petOptional)
+                .orElseThrow(() -> new PetNotFoundException(id));
     }
 
     public String checkPetRegistration(Long id){

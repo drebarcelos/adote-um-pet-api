@@ -29,12 +29,8 @@ public class PetController {
     }
 
     @GetMapping("/pets/{id}")
-    public ResponseEntity<Pet> getRegister(@PathVariable Long id){
-        Optional<Pet> petOptional = petService.getPet(id);
-
-        return petOptional
-                .map(pet -> ResponseEntity.status(HttpStatus.OK).body(pet))
-                .orElseThrow(() -> new PetNotFoundException(id));
+    public ResponseEntity<Object> getRegister(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(petService.getPet(id));
     }
 
     @DeleteMapping("/pets/{id}")
