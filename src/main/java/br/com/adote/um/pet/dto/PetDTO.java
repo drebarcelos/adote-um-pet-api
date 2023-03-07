@@ -1,11 +1,13 @@
 package br.com.adote.um.pet.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
+@Builder
 @Getter
 @AllArgsConstructor
-public class PetRequest {
+public class PetDTO {
     private String name;
     private String specie;
     private String gender;
