@@ -1,8 +1,7 @@
 package br.com.adote.um.pet.controller;
 
-import br.com.adote.um.pet.dto.PetRequest;
+import br.com.adote.um.pet.dto.PetDTO;
 import br.com.adote.um.pet.entity.Pet;
-import br.com.adote.um.pet.exception.PetNotFoundException;
 import br.com.adote.um.pet.service.PetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,22 +17,22 @@ public class PetController {
     private final PetService petService;
 
     @PostMapping(path = "/cadastro/pet")
-    public ResponseEntity<Object> petRegister(@RequestBody PetRequest petRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(petService.savePet(petRequest));
+    public ResponseEntity<Object> savePet(@RequestBody PetDTO petDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(petService.savePet(petDTO));
     }
 
     @GetMapping("/pets")
-    public ResponseEntity<List<Pet>> getRegisters(){
+    public ResponseEntity<List<Pet>> getAllPets(){
         return ResponseEntity.status(HttpStatus.OK).body(petService.getAllPets());
     }
 
     @GetMapping("/pets/{id}")
-    public ResponseEntity<Object> getRegister(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(petService.getPet(id));
+    public ResponseEntity<PetDTO> getPet(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(petService.getPetById(id));
     }
 
     @DeleteMapping("/pets/{id}")
-    public ResponseEntity<Object> deleteRegister(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(petService.checkPetRegistration(id));
+    public ResponseEntity<Object> deletePet(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(petService.deletePet(id));
     }
 }
