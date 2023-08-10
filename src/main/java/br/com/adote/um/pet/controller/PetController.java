@@ -22,7 +22,7 @@ public class PetController {
     }
 
     @GetMapping("/pets")
-    public ResponseEntity<List<Pet>> getAllPets(){
+    public ResponseEntity<List<PetDTO>> getAllPets(){
         return ResponseEntity.status(HttpStatus.OK).body(petService.getAllPets());
     }
 
@@ -32,7 +32,7 @@ public class PetController {
     }
 
     @DeleteMapping("/pets/{id}")
-    public ResponseEntity<Object> deletePet(@PathVariable Long id){
+    public ResponseEntity<String> deletePet(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(petService.deletePet(id));
     }
 }

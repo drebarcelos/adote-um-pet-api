@@ -1,7 +1,8 @@
 package br.com.adote.um.pet.service;
 
 import br.com.adote.um.pet.dto.PetDTO;
-import br.com.adote.um.pet.exception.PetNotFoundException;
+import br.com.adote.um.pet.exception.NotFoundException;
+import br.com.adote.um.pet.exception.utils.ErrorCode;
 import br.com.adote.um.pet.mapper.PetMapper;
 import br.com.adote.um.pet.repository.PetReporitory;
 import br.com.adote.um.pet.entity.Pet;
@@ -9,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import static br.com.adote.um.pet.mapper.PetMapper.*;
 
 
@@ -19,27 +19,30 @@ public class PetService {
 
     private final PetReporitory petReporitory;
 
-    public Pet savePet(PetDTO petDTO){
-        return petReporitory.save(petDTOToPet(petDTO));
+    public PetDTO savePet(PetDTO petDTO){
+        Pet pet = petReporitory.save(petDTOToPet(petDTO));
+        return petToPetDTO(pet);
     }
 
-    public List<Pet> getAllPets(){
-        return petReporitory.findAll();
+    public List<PetDTO> getAllPets(){
+        return petReporitory.findAll()
+                .stream()
+                .map(PetMapper::petToPetDTO)
+                .toList();
     }
 
     public PetDTO getPetById(Long id){
-        Optional<Pet> petOptional = petReporitory.findById(id);
+        Pet pet = petReporitory.findById(id)
+                .orElseThrow(() -> new NotFoundException("Pet %d not found", id, ErrorCode.PET_NOT_FOUND));
 
-        return petOptional
-                .map(PetMapper::petToPetDTO)
-                .orElseThrow(() -> new PetNotFoundException(id));
+        return petToPetDTO(pet);
     }
 
     public String deletePet(Long id){
-        if(petReporitory.existsById(id)){
-            petReporitory.deleteById(id);
-            return String.format("Pet %d deleted successfully", id);
-        }
-        throw new PetNotFoundException(id);
+        Pet pet = petReporitory.findById(id)
+                .orElseThrow(() -> new NotFoundException("Pet %d not found", id, ErrorCode.PET_NOT_FOUND));
+
+        petReporitory.delete(pet);
+        return String.format("Pet %d deleted successfully", id);
     }
 }
